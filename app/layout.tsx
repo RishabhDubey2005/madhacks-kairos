@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
@@ -25,11 +28,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+  <body className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen`}>
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="flex-1 flex flex-col min-h-0">
+        <header className="flex-none sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-6">
+          <SidebarTrigger />
+          <div className="flex items-center gap-2">
+            <h2 className="text-lg font-semibold">Dashboard</h2>
+          </div>
+        </header>
+        <div className="flex-1 overflow-auto">
+          {children}
+        </div>
+      </main>
+    </SidebarProvider>
+  </body>
+</html>
   );
 }
